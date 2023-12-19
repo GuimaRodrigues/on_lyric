@@ -1,10 +1,10 @@
-import 'package:app_musica/home_page.dart';
+import 'package:app_musica/utils/storage/control_session.dart';
+import 'package:app_musica/utils/storage/storage_constants.dart';
+import 'package:app_musica/view/home_page_view.dart';
+import 'package:app_musica/view/login_page.dart';
 import 'package:flutter/material.dart';
-import 'package:localstorage/localstorage.dart';
 
-final LocalStorage storage = LocalStorage('alan_bortot');
-
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -20,7 +20,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: FutureBuilder(
+        future: verificarState(),
+        builder: (context, snapshot) {
+          if (snapshot.data == true) {
+            return const HomePage();
+          }
+          return const LoginPage();
+        },
+      ),
     );
+  }
+
+  verificarState() async {
+    return await ControlSession().get(StorageConstants().USUARIO_LOGADO);
   }
 }

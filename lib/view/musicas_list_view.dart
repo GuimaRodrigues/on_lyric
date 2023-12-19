@@ -1,15 +1,15 @@
-import 'package:app_musica/main.dart';
+import 'package:app_musica/utils/storage/control_session.dart';
 import 'package:flutter/material.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MusicasListView extends StatefulWidget {
+  const MusicasListView({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MusicasListView> createState() => _MusicasListViewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MusicasListViewState extends State<MusicasListView> {
   String textoEscrito = '';
   bool barraN = false;
   bool barraRetaDoisPontos = false;
@@ -41,16 +41,18 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {
-                  storage.setItem('usuario', textoEscrito);
+                onPressed: () async {
+                  await ControlSession.internal().set('musica', textoEscrito);
                 },
                 child: Text('Salvar'),
               ),
             ),
             Expanded(
               child: ElevatedButton(
-                onPressed: () {
-                  String textoSalvo = storage.getItem('usuario');
+                onPressed: () async {
+                  String textoSalvo =
+                      await ControlSession.internal().get('musica');
+                  ;
                   setState(() {
                     textoEscrito = textoSalvo;
                     controller.text = textoEscrito;
@@ -67,13 +69,40 @@ class _HomePageState extends State<HomePage> {
         title: const Text('App sem nome do boxa'),
       ),
       body: Column(children: [
+        Container(
+          decoration: BoxDecoration(
+              color: Colors.lime, border: Border.all(color: Colors.black)),
+          height: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: Text('Músicas'),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text('Repertórios'),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text('Minha conta'),
+              ),
+              SizedBox(
+                width: 50,
+              ),
+            ],
+          ),
+        ),
         Expanded(
           child: Row(
             children: [
               Expanded(
                 child: Container(
                   height: MediaQuery.of(context).size.height,
-                  color: Colors.white,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black)),
                   child: TextField(
                     controller: controller,
                     style: TextStyle(color: Colors.black),
@@ -96,8 +125,10 @@ class _HomePageState extends State<HomePage> {
               ),
               Expanded(
                 child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(color: Colors.white)),
                   height: MediaQuery.of(context).size.height,
-                  color: Colors.black,
                   child: TextField(
                     style: const TextStyle(color: Colors.white),
                     decoration: null,
