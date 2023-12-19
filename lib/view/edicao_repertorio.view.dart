@@ -1,4 +1,5 @@
 import 'package:app_musica/utils/storage/control_session.dart';
+import 'package:app_musica/widgets/barra_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
 
@@ -69,31 +70,7 @@ class _EdicaoRepertorioViewState extends State<EdicaoRepertorioView> {
         title: const Text('App sem nome do boxa'),
       ),
       body: Column(children: [
-        Container(
-          decoration: BoxDecoration(
-              color: Colors.lime, border: Border.all(color: Colors.black)),
-          height: 100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: Text('Músicas'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text('Repertórios'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text('Minha conta'),
-              ),
-              SizedBox(
-                width: 50,
-              ),
-            ],
-          ),
-        ),
+        BarraMenu(),
         Expanded(
           child: Row(
             children: [

@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 }
               },
-              child: Text('Logar'),
+              child: const Text('Logar'),
             ),
           ],
         ),

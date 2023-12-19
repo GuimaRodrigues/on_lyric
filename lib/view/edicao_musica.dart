@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:app_musica/model/Musica.dart';
 import 'package:app_musica/utils/storage/control_session.dart';
+import 'package:app_musica/utils/storage/storage_constants.dart';
+import 'package:app_musica/widgets/barra_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
 
@@ -11,15 +16,17 @@ class EdicaoMusicaView extends StatefulWidget {
 
 class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
   String textoEscrito = '';
+  String titulo = '';
   bool barraN = false;
   bool barraRetaDoisPontos = false;
   String cifras =
       " A | A# | B | C | D | E | F | G | m | Am | Bm | Cm | Dm | Em | Fm | Gm | b | # | 7 | + | - | C# | D# | Eb | F# | Ab | Bb ";
-  TextEditingController controller = TextEditingController();
+  TextEditingController controllerTitulo = TextEditingController();
+  TextEditingController controllerMusica = TextEditingController();
 
   @override
   void initState() {
-    controller = RichTextController(
+    controllerMusica = RichTextController(
       patternMatchMap: {
         RegExp(
           cifras,
@@ -30,6 +37,7 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
       },
       onMatch: (List<String> matches) {},
     );
+    controllerTitulo = TextEditingController();
     super.initState();
   }
 
@@ -42,23 +50,21 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
-                  await ControlSession.internal().set('musica', textoEscrito);
+                  List<Musica> musicas = await ControlSession.internal()
+                          .get(StorageConstants().MUSICAS) ??
+                      [];
+                  // Musica? musica = musicas
+                  //     .where((element) => element.titulo == titulo)
+                  //     .first;
+
+                  Musica musica = Musica(titulo: titulo, musica: textoEscrito);
+
+                  musicas.add(musica);
+                  await ControlSession.internal().set(
+                      StorageConstants().MUSICAS,
+                      jsonEncode(musicas.toString()));
                 },
                 child: Text('Salvar'),
-              ),
-            ),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () async {
-                  String textoSalvo =
-                      await ControlSession.internal().get('musica');
-                  ;
-                  setState(() {
-                    textoEscrito = textoSalvo;
-                    controller.text = textoEscrito;
-                  });
-                },
-                child: Text('Carregar'),
               ),
             ),
           ],
@@ -69,29 +75,19 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
         title: const Text('App sem nome do boxa'),
       ),
       body: Column(children: [
+        BarraMenu(),
         Container(
           decoration: BoxDecoration(
-              color: Colors.lime, border: Border.all(color: Colors.black)),
-          height: 100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: Text('Músicas'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text('Repertórios'),
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Text('Minha conta'),
-              ),
-              SizedBox(
-                width: 50,
-              ),
-            ],
+              color: Colors.white, border: Border.all(color: Colors.black)),
+          child: TextField(
+            controller: controllerTitulo,
+            style: TextStyle(color: Colors.black),
+            decoration: null,
+            onChanged: (text) {
+              setState(() {
+                titulo = text;
+              });
+            },
           ),
         ),
         Expanded(
@@ -104,7 +100,7 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
                       color: Colors.white,
                       border: Border.all(color: Colors.black)),
                   child: TextField(
-                    controller: controller,
+                    controller: controllerMusica,
                     style: TextStyle(color: Colors.black),
                     decoration: null,
                     maxLines: null,
@@ -132,7 +128,7 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
                   child: TextField(
                     style: const TextStyle(color: Colors.white),
                     decoration: null,
-                    controller: controller,
+                    controller: controllerMusica,
                     maxLines: null,
                     minLines: null,
                     readOnly: true,

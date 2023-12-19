@@ -1,4 +1,5 @@
 class Musica {
-  String? musica;
-  String? titulo;
+  Musica({required this.musica, required this.titulo});
+  String musica;
+  String titulo;
 }
