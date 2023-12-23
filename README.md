@@ -1,4 +1,4 @@
-# app_musica
+# on_lyric
 
 A new Flutter project.
 

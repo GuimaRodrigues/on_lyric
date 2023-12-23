@@ -1,5 +1,5 @@
-import 'package:app_musica/view/musicas_list_view.dart';
-import 'package:app_musica/view/repertorios_list_view.dart';
+import 'package:on_lyric/view/musicas_list_view.dart';
+import 'package:on_lyric/view/repertorios_list_view.dart';
 import 'package:flutter/material.dart';
 
 class BarraMenu extends StatelessWidget {

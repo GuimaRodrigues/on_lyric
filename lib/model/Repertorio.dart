@@ -1,4 +1,4 @@
-import 'package:app_musica/model/Musica.dart';
+import 'package:on_lyric/model/Musica.dart';
 
 class Repertorio {
   List<Musica>? musicas;

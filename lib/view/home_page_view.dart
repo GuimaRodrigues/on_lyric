@@ -1,4 +1,4 @@
-import 'package:app_musica/widgets/barra_menu.dart';
+import 'package:on_lyric/widgets/barra_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
 

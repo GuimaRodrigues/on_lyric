@@ -1,5 +1,5 @@
-import 'package:app_musica/model/Musica.dart';
-import 'package:app_musica/model/Repertorio.dart';
+import 'package:on_lyric/model/Musica.dart';
+import 'package:on_lyric/model/Repertorio.dart';
 
 class Usuario {
   String? nome;

@@ -1,8 +1,10 @@
-import 'package:app_musica/model/Musica.dart';
-import 'package:app_musica/utils/storage/control_session.dart';
-import 'package:app_musica/utils/storage/storage_constants.dart';
-import 'package:app_musica/view/edicao_musica.dart';
-import 'package:app_musica/widgets/barra_menu.dart';
+import 'dart:convert';
+
+import 'package:on_lyric/model/Musica.dart';
+import 'package:on_lyric/utils/storage/control_session.dart';
+import 'package:on_lyric/utils/storage/storage_constants.dart';
+import 'package:on_lyric/view/edicao_musica.dart';
+import 'package:on_lyric/widgets/barra_menu.dart';
 import 'package:flutter/material.dart';
 
 class MusicasListView extends StatefulWidget {
@@ -13,7 +15,7 @@ class MusicasListView extends StatefulWidget {
 }
 
 class _MusicasListViewState extends State<MusicasListView> {
-  List<Musica> _musicas = [];
+  List _musicas = [];
   @override
   void initState() {
     carregarMusicas();
@@ -35,8 +37,7 @@ class _MusicasListViewState extends State<MusicasListView> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const EdicaoMusicaView()),
+                  MaterialPageRoute(builder: (context) => EdicaoMusicaView()),
                 );
               },
               child: Text("Nova Musica")),
@@ -44,13 +45,25 @@ class _MusicasListViewState extends State<MusicasListView> {
             child: ListView.builder(
               itemCount: _musicas.length,
               itemBuilder: (_, index) {
-                return Container(
-                  child: Row(
-                    children: [
-                      Text(
-                        _musicas[index].titulo.toString(),
-                      ),
-                    ],
+                return ElevatedButton(
+                  onPressed: () {
+                    _musicas[index];
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EdicaoMusicaView(
+                              titulo: _musicas[index].titulo,
+                              textoEscrito: _musicas[index].escrita)),
+                    );
+                  },
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Text(
+                          _musicas[index].titulo.toString(),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -62,10 +75,16 @@ class _MusicasListViewState extends State<MusicasListView> {
   }
 
   carregarMusicas() async {
-    List<Musica>? musicas =
+    dynamic musicasJson =
         await ControlSession.internal().get(StorageConstants().MUSICAS);
+    List<Musica> musicas = [];
+    musicasJson?.forEach((element) {
+      musicas
+          .add(Musica(titulo: element['titulo'], escrita: element['escrita']));
+    });
+
     setState(() {
-      _musicas = musicas ?? [];
+      _musicas = musicas;
     });
   }
 }

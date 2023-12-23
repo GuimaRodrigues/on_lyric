@@ -1,22 +1,21 @@
 import 'dart:convert';
 
-import 'package:app_musica/model/Musica.dart';
-import 'package:app_musica/utils/storage/control_session.dart';
-import 'package:app_musica/utils/storage/storage_constants.dart';
-import 'package:app_musica/widgets/barra_menu.dart';
+import 'package:on_lyric/model/Musica.dart';
+import 'package:on_lyric/utils/storage/control_session.dart';
+import 'package:on_lyric/utils/storage/storage_constants.dart';
+import 'package:on_lyric/widgets/barra_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
 
 class EdicaoMusicaView extends StatefulWidget {
-  const EdicaoMusicaView({super.key});
-
+  EdicaoMusicaView({super.key, this.titulo = '', this.textoEscrito = ''});
+  String textoEscrito;
+  String titulo;
   @override
   State<EdicaoMusicaView> createState() => _EdicaoMusicaViewState();
 }
 
 class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
-  String textoEscrito = '';
-  String titulo = '';
   bool barraN = false;
   bool barraRetaDoisPontos = false;
   String cifras =
@@ -27,6 +26,7 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
   @override
   void initState() {
     controllerMusica = RichTextController(
+      text: widget.textoEscrito,
       patternMatchMap: {
         RegExp(
           cifras,
@@ -37,7 +37,7 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
       },
       onMatch: (List<String> matches) {},
     );
-    controllerTitulo = TextEditingController();
+    controllerTitulo = TextEditingController(text: widget.titulo);
     super.initState();
   }
 
@@ -50,19 +50,19 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
-                  List<Musica> musicas = await ControlSession.internal()
+                  List<dynamic> musicas = await ControlSession.internal()
                           .get(StorageConstants().MUSICAS) ??
                       [];
                   // Musica? musica = musicas
                   //     .where((element) => element.titulo == titulo)
                   //     .first;
 
-                  Musica musica = Musica(titulo: titulo, musica: textoEscrito);
+                  Musica musica = Musica(
+                      titulo: widget.titulo, escrita: widget.textoEscrito);
 
-                  musicas.add(musica);
-                  await ControlSession.internal().set(
-                      StorageConstants().MUSICAS,
-                      jsonEncode(musicas.toString()));
+                  musicas.add(musica.toJson());
+                  await ControlSession.internal()
+                      .set(StorageConstants().MUSICAS, jsonEncode(musicas));
                 },
                 child: Text('Salvar'),
               ),
@@ -85,7 +85,7 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
             decoration: null,
             onChanged: (text) {
               setState(() {
-                titulo = text;
+                widget.titulo = text;
               });
             },
           ),
@@ -107,13 +107,13 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
                     minLines: null,
                     onChanged: (text) {
                       setState(() {
-                        textoEscrito = text;
-                        if (textoEscrito.endsWith('\n')) {
+                        widget.textoEscrito = text;
+                        if (widget.textoEscrito.endsWith('\n')) {
                           setState(() {
                             // refrao = true;
                           });
                         }
-                        if (textoEscrito.contains('|:')) {}
+                        if (widget.textoEscrito.contains('|:')) {}
                       });
                     },
                   ),

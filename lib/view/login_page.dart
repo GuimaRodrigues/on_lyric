@@ -1,6 +1,6 @@
-import 'package:app_musica/utils/storage/control_session.dart';
-import 'package:app_musica/utils/storage/storage_constants.dart';
-import 'package:app_musica/view/home_page_view.dart';
+import 'package:on_lyric/utils/storage/control_session.dart';
+import 'package:on_lyric/utils/storage/storage_constants.dart';
+import 'package:on_lyric/view/home_page_view.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
