@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:on_lyric/model/Musica.dart';
 import 'package:on_lyric/utils/storage/control_session.dart';
 import 'package:on_lyric/utils/storage/storage_constants.dart';
+import 'package:on_lyric/widgets/app_bar.dart';
 import 'package:on_lyric/widgets/barra_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:rich_text_controller/rich_text_controller.dart';
@@ -70,10 +71,7 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
           ],
         ),
       ),
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text('App sem nome do boxa'),
-      ),
+      appBar: OnLyricAppBar(),
       body: Column(children: [
         BarraMenu(),
         Container(

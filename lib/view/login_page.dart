@@ -1,7 +1,8 @@
 import 'package:on_lyric/utils/storage/control_session.dart';
 import 'package:on_lyric/utils/storage/storage_constants.dart';
-import 'package:on_lyric/view/home_page_view.dart';
 import 'package:flutter/material.dart';
+import 'package:on_lyric/view/musicas_list_view.dart';
+import 'package:on_lyric/widgets/app_bar.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,10 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text('App sem nome do boxa'),
-      ),
+      appBar: OnLyricAppBar(),
       body: Container(
         alignment: Alignment.center,
         height: MediaQuery.of(context).size.height,
@@ -72,7 +70,8 @@ class _LoginPageState extends State<LoginPage> {
                       .set(StorageConstants().USUARIO_LOGADO, true);
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
+                    MaterialPageRoute(
+                        builder: (context) => const MusicasListView()),
                   );
                 }
               },
