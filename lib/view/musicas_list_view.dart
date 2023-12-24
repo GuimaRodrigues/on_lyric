@@ -32,13 +32,14 @@ class _MusicasListViewState extends State<MusicasListView> {
         children: [
           BarraMenu(),
           ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => EdicaoMusicaView()),
-                );
-              },
-              child: Text("Nova Musica")),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => EdicaoMusicaView()),
+              );
+            },
+            child: Text("Nova Musica"),
+          ),
           Expanded(
             child: ListView.builder(
               itemCount: _musicas.length,
