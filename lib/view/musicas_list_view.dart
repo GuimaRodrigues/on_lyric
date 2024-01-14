@@ -46,8 +46,7 @@ class _MusicasListViewState extends State<MusicasListView> {
               itemBuilder: (_, index) {
                 return ElevatedButton(
                   onPressed: () {
-                    _musicas[index];
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => EdicaoMusicaView(

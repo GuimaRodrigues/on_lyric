@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:on_lyric/model/Musica.dart';
 import 'package:on_lyric/utils/storage/control_session.dart';
 import 'package:on_lyric/utils/storage/storage_constants.dart';
+import 'package:on_lyric/view/musicas_list_view.dart';
 import 'package:on_lyric/widgets/app_bar.dart';
 import 'package:on_lyric/widgets/barra_menu.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +57,6 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
                   List<dynamic> musicas = await ControlSession.internal()
                           .get(StorageConstants().MUSICAS) ??
                       [];
-                  // Musica? musica = musicas
-                  //     .where((element) => element.titulo == titulo)
-                  //     .first;
 
                   Musica musica = Musica(
                       titulo: widget.titulo, escrita: widget.textoEscrito);
@@ -64,6 +64,12 @@ class _EdicaoMusicaViewState extends State<EdicaoMusicaView> {
                   musicas.add(musica.toJson());
                   await ControlSession.internal()
                       .set(StorageConstants().MUSICAS, jsonEncode(musicas));
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MusicasListView()),
+                    (Route<dynamic> route) => false,
+                  );
                 },
                 child: Text('Salvar'),
               ),

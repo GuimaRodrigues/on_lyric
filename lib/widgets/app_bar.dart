@@ -6,6 +6,7 @@ class OnLyricAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      centerTitle: true,
       backgroundColor: Colors.blue,
       title: const Text('On Lyric'),
     );
